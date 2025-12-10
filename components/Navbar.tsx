@@ -24,10 +24,10 @@ const Navbar = () => {
 
         {/* Menu */}
         <div className="hidden md:flex items-center gap-6 text-sm text-textSecondary">
-          <Link href="/">Home</Link>
-          <Link href="/shop">Shop</Link>
-          <Link href="#collections">Collections</Link>
-          <Link href="/about">About</Link>
+          <b><Link href="/">Home</Link></b>
+          <b><Link href="/shop">Shop</Link></b>
+          <b><Link href="#collections">Collections</Link></b>
+          <b><Link href="/about">About</Link></b>
         </div>
 
         {/* Cart Icon */}
