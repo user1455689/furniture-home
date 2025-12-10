@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-body: Inter, system-ui, sans-serif;
+  --font-heading: Poppins, system-ui, sans-serif;
+
+  --color-bg: #FAFAFA;
+  --color-text-primary: #222222;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+
+  @apply bg-bg text-textPrimary;
+}
+
+.app-container {
+  @apply max-w-6xl mx-auto px-4 md:px-6 lg:px-0;
+}
