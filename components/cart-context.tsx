@@ -1,19 +1,33 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { Product } from "@/data/products";
+import type { Product } from "@/data/products";
 
+// -----------------------------
+// Cart Item Type
+// -----------------------------
 export interface CartItem {
   product: Product;
   quantity: number;
 }
 
-interface CustomerInfo {
+// -----------------------------
+// Customer Info (FULL FIELDS)
+// -----------------------------
+export interface CustomerInfo {
   name: string;
   phone: string;
+  email: string;
   address: string;
+  city: string;
+  area: string;
+  postal: string;
+  landmark: string;
 }
 
+// -----------------------------
+// Cart Context Interface
+// -----------------------------
 interface CartContextValue {
   items: CartItem[];
   addToCart: (product: Product, quantity?: number) => void;
@@ -28,22 +42,34 @@ interface CartContextValue {
 
 const CartContext = createContext<CartContextValue | undefined>(undefined);
 
+// -----------------------------
+// Provider Component
+// -----------------------------
 export const CartProvider = ({ children }: { children: ReactNode }) => {
   const [items, setItems] = useState<CartItem[]>([]);
 
+  // Default customer structure
   const [customer, setCustomer] = useState<CustomerInfo>({
     name: "",
     phone: "",
+    email: "",
     address: "",
+    city: "",
+    area: "",
+    postal: "",
+    landmark: "",
   });
 
+  // Smart partial updater
   const updateCustomer = (data: Partial<CustomerInfo>) => {
     setCustomer((prev) => ({ ...prev, ...data }));
   };
 
+  // Add to cart
   const addToCart = (product: Product, quantity: number = 1) => {
     setItems((prev) => {
       const existing = prev.find((i) => i.product.id === product.id);
+
       if (existing) {
         return prev.map((i) =>
           i.product.id === product.id
@@ -51,6 +77,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
             : i
         );
       }
+
       return [...prev, { product, quantity }];
     });
   };
@@ -61,6 +88,7 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
 
   const updateQuantity = (productId: number, quantity: number) => {
     if (quantity <= 0) return removeFromCart(productId);
+
     setItems((prev) =>
       prev.map((i) =>
         i.product.id === productId ? { ...i, quantity } : i
@@ -93,6 +121,9 @@ export const CartProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+// -----------------------------
+// Hook
+// -----------------------------
 export const useCart = () => {
   const ctx = useContext(CartContext);
   if (!ctx) throw new Error("useCart must be used inside CartProvider");
